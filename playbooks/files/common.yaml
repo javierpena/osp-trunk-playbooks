@@ -11,7 +11,7 @@ dlrn::web::cert_mail: undef
 dlrn::workers:
   rhel7-rocky:
     distro: 'centos7'
-    target: 'centos'
+    target: 'rhel'
     distgit_branch: 'rpm-master'
     distro_branch: 'master'
     disable_email: *disable_email

@@ -1,0 +1,14 @@
+---
+- hosts: osp-trunk
+  tasks:
+    - name: Copy centos.cfg to rhel.cfg in rhel7-rocky dlrn/scripts dir
+      shell:
+        cmd: |
+          cp /home/rhel7-rocky/dlrn/scripts/centos.cfg  /home/rhel7-rocky/dlrn/scripts/rhel.cfg
+      become: true
+    
+    - name: Add project_name option to projects.ini (not supported by puppet-dlrn)
+      shell:
+        cmd: |
+          crudini --set /usr/local/share/dlrn/rhel7-rocky/projects.ini DEFAULT project_name "OSP Trunk"
+      become: true

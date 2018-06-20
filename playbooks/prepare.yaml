@@ -26,6 +26,7 @@
       - policycoreutils
       - puppet
       - brewkoji
+      - crudini
       become: true
 
     - name: Set up mock configuration

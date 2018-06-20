@@ -7,3 +7,6 @@
 
 - name: Run puppet-dlrn
   include: run-puppet-dlrn.yaml
+
+- name: Post-puppet hacks
+  include: post-puppet.yaml
