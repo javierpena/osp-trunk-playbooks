@@ -1,0 +1,37 @@
+---
+enable_worker_cronjobs: &enable_cron false
+enable_purge_cronjobs: &enable_purge false
+disable_worker_email: &disable_email true
+
+dlrn::web::web_domain: 'osp-trunk-poc.par.redhat.com'
+dlrn::web::enable_api: false
+dlrn::web::api_workers: []
+dlrn::web::cert_mail: undef
+
+dlrn::workers:
+  rhel7-rocky:
+    distro: 'centos7'
+    target: 'centos'
+    distgit_branch: 'rpm-master'
+    distro_branch: 'master'
+    disable_email: *disable_email
+    enable_cron: *enable_cron
+    enable_purge: *enable_purge
+    purge_hour: '2'
+    purge_minute: '7'
+    symlinks: ['/var/www/html/rhel7-rocky', '/var/www/html/rhel7-master']
+    release: 'rocky-uc'
+    baseurl: 'https://osp-trunk-poc.par.redhat.com/rhel7-rocky'
+    pkginfo_driver: 'dlrn.drivers.downstream.DownstreamInfoDriver'
+    build_driver: 'dlrn.drivers.kojidriver.KojiBuildDriver'
+    db_connection: 'sqlite:///commits.sqlite'
+    mock_tmpfs_enable: true
+    fallback_to_master: true
+    enable_deps_sync: false
+    enable_brs_sync: false
+    koji_exe: 'brew'
+    koji_krb_principal: 'jpena@REDHAT.COM'
+    koji_krb_keytab: '/home/rhel7-rocky/.keytab'
+    koji_scratch_builds: true
+    koji_build_target: 'rhos-14.0-rhel-7-candidate'
+    downstream_versions_url: 'https://trunk.rdoproject.org/centos7-master/consistent/versions.csv'

@@ -1,0 +1,9 @@
+---
+- name: Preparation tasks
+  include: prepare.yaml
+
+- name: Configure puppet-dlrn
+  include: configure-puppet-dlrn.yaml
+
+- name: Run puppet-dlrn
+  include: run-puppet-dlrn.yaml

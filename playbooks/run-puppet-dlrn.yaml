@@ -1,0 +1,7 @@
+---
+- hosts: osp-trunk
+  tasks:
+    - name: Run puppet-dlrn manifest
+      puppet:
+        manifest: '{{ ansible_user_dir }}/puppet-dlrn/examples/site.pp'
+      become: true

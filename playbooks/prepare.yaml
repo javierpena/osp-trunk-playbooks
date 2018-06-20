@@ -1,0 +1,86 @@
+---
+- hosts: osp-trunk
+  tasks:
+    - name: Enable brew repository
+      get_url:
+        url:  http://download.devel.redhat.com/rel-eng/RCMTOOLS/rcm-tools-rhel-7-server.repo
+        dest: /etc/yum.repos.d/rcm-tools-rhel-7-server.repo
+        mode: 0644
+      become: true
+
+    - name: Install required dependencies
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+      - git
+      - createrepo
+      - python-virtualenv
+      - mock
+      - gcc
+      - redhat-rpm-config
+      - rpmdevtools
+      - libffi-devel
+      - openssl-devel
+      - yum-utils
+      - policycoreutils
+      - puppet
+      - brewkoji
+      become: true
+
+    - name: Set up mock configuration
+      copy: 
+        src: site-defaults.cfg
+        dest: /etc/mock/site-defaults.cfg
+        owner: root
+        group: root
+        mode: 0644
+      become: true
+
+    - name: Clone puppet-dlrn
+      git:
+        repo: 'https://github.com/rdo-infra/puppet-dlrn'
+        dest: '{{ ansible_user_dir }}/puppet-dlrn'
+
+    - name: Load under-review patch https://review.rdoproject.org/r/14311
+      shell:
+        cmd: |
+          git fetch https://review.rdoproject.org/r/rdo-infra/puppet-dlrn refs/changes/11/14311/2 && git cherry-pick FETCH_HEAD
+        chdir: '{{ ansible_user_dir }}/puppet-dlrn'
+
+    - name: Workaround for non-existing rhel7-rocky delorean-deps.repo
+      copy:
+        content: ' '
+        dest: '{{ ansible_user_dir }}/puppet-dlrn/files/rhel7-rocky-dlrn-deps.repo'
+        mode: 0644
+
+    - name: Build puppet module
+      shell:
+        cmd: |
+          puppet module build
+        chdir: '{{ ansible_user_dir }}/puppet-dlrn'
+
+    - name: Check if puppet module is already installed
+      stat:
+        path: '/etc/puppet/modules/dlrn'
+      register: puppetmodule
+
+    - name: Uninstall previous version of puppet module
+      shell:
+        cmd: |
+          puppet module uninstall --force jpena-dlrn
+      when: puppetmodule.stat.exists == True
+      become: true
+
+    - name: Install puppet module
+      shell:
+        cmd: |
+          puppet module install "{{ ansible_user_dir }}/puppet-dlrn/pkg/jpena-dlrn-0.1.0.tar.gz"
+      become: true
+
+    - name: Fetch CentOS 7 RPM GPG key (used for mock)
+      get_url:
+        url:  https://www.centos.org/keys/RPM-GPG-KEY-CentOS-7
+        dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+        mode: 0644
+      become: true

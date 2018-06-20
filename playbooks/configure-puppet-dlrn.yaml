@@ -1,0 +1,11 @@
+---
+- hosts: osp-trunk
+  tasks:
+    - name: Deploy hiera yaml file
+      copy: 
+        src: common.yaml
+        dest: /var/lib/hiera/common.yaml
+        owner: root
+        group: root
+        mode: 644
+      become: true
