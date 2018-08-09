@@ -12,3 +12,21 @@
         cmd: |
           crudini --set /usr/local/share/dlrn/rhel7-rocky/projects.ini DEFAULT project_name "OSP Trunk"
       become: true
+
+    - name: Deploy custom (hacky) run-dlrn.sh
+      copy:
+        src: run_dlrn.sh
+        dest: /usr/local/bin/run-dlrn.sh
+        owner: root
+        group: root
+        mode: 755
+      become: true
+
+    - name: Deploy SSH configuration
+      copy: 
+        src: ssh_config
+        dest: /home/rhel7-rocky/.ssh/config
+        owner: rhel7-rocky
+        group: rhel7-rocky
+        mode: 600
+      become: true

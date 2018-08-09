@@ -21,7 +21,7 @@ dlrn::workers:
     purge_minute: '7'
     symlinks: ['/var/www/html/rhel7-rocky', '/var/www/html/rhel7-master']
     release: 'rocky-uc'
-    baseurl: 'https://osp-trunk-poc.par.redhat.com/rhel7-rocky'
+    baseurl: 'http://osp-trunk-poc.par.redhat.com/rhel7-rocky'
     pkginfo_driver: 'dlrn.drivers.downstream.DownstreamInfoDriver'
     build_driver: 'dlrn.drivers.kojidriver.KojiBuildDriver'
     db_connection: 'sqlite:///commits.sqlite'
@@ -32,6 +32,14 @@ dlrn::workers:
     koji_exe: 'brew'
     koji_krb_principal: 'jpena@REDHAT.COM'
     koji_krb_keytab: '/home/rhel7-rocky/.keytab'
-    koji_scratch_builds: true
-    koji_build_target: 'rhos-14.0-rhel-7-candidate'
+    koji_scratch_builds: false
+    koji_build_target: 'rhos-15.0-rhel-7-trunk-candidate'
+    koji_arch: 'x86_64'
+    koji_fetch_mock_config: true
+    koji_use_rhpkg: true
+    downstream_distroinfo_repo: # add URL of distroinfo repo here
+    downstream_info_files: 'osp.yml'
     downstream_versions_url: 'https://trunk.rdoproject.org/centos7-master/consistent/versions.csv'
+    downstream_distro_branch: 'rhos-15.0-rhel-7-trunk'
+    downstream_prefix: 'osp-'
+    downstream_distro_filter: true

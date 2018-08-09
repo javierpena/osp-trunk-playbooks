@@ -46,7 +46,7 @@
     - name: Load under-review patch https://review.rdoproject.org/r/14311
       shell:
         cmd: |
-          git fetch https://review.rdoproject.org/r/rdo-infra/puppet-dlrn refs/changes/11/14311/2 && git cherry-pick FETCH_HEAD
+          git fetch https://review.rdoproject.org/r/rdo-infra/puppet-dlrn refs/changes/11/14311/5 && git cherry-pick FETCH_HEAD
         chdir: '{{ ansible_user_dir }}/puppet-dlrn'
 
     - name: Workaround for non-existing rhel7-rocky delorean-deps.repo

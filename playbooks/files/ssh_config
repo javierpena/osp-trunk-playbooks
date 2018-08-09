@@ -1,0 +1,5 @@
+GSSAPIAuthentication yes
+
+Host <insert hostname here>
+    #User jpena
+    GSSAPIDelegateCredentials yes

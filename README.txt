@@ -10,4 +10,6 @@ sudo subscription-manager repos --enable rhel-7-server-openstack-12-rpms    # re
 
 sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
+* Post-execution actions:
 
+Deploy keytab file
